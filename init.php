@@ -8,7 +8,7 @@ class ttrss_opencc extends Plugin
 		return array(
 			1.0,
 			"Conversion between Traditional and Simplified Chinese via OpenCC",
-			"https://github.com/HenryQW/opencc/"
+			"https://github.com/HenryQW/ttrss_opencc/"
 		);
 		}
 
@@ -21,7 +21,7 @@ class ttrss_opencc extends Plugin
 
 	function save()
 		{
-		$this->host->set($this, "mercury_API", $_POST["mercury_API"]);
+		$this->host->set($this, "opencc_API", $_POST["opencc_API"]);
 		echo __("API key saved.");
 		}
 
@@ -58,10 +58,10 @@ class ttrss_opencc extends Plugin
 			</script>";
 		print_hidden("op", "pluginhandler");
 		print_hidden("method", "save");
-		print_hidden("plugin", "opencc");
-		$mercury_API = $this->host->get($this, "mercury_API");
-		print "<input dojoType='dijit.form.ValidationTextBox' required='1' name='mercury_API' value='" . $mercury_API . "'/>";
-		print "&nbsp;<label for=\"mercury_API\">" . __("Get your own API key here: https://mercury.postlight.com/web-parser/") . "</label>";
+		print_hidden("plugin", "ttrss_opencc");
+		$opencc_API = $this->host->get($this, "opencc_API");
+		print "<input dojoType='dijit.form.ValidationTextBox' required='1' name='opencc_API' value='" . $opencc_API . "'/>";
+		print "&nbsp;<label for=\"opencc_API\">" . __("API key for OpenCC server. https://github.com/HenryQW/api.henry.wang/blob/master/controllers/openCCController.js") . "</label>";
 		print "<p>";
 		print_button("submit", __("Save"));
 		print "</form>";
@@ -88,7 +88,7 @@ class ttrss_opencc extends Plugin
 
 	function hook_prefs_edit_feed($feed_id)
 		{
-		print "<div class=\"dlgSec\">" . __("Mercury") . "</div>";
+		print "<div class=\"dlgSec\">" . __("OpenCC") . "</div>";
 		print "<div class=\"dlgSecCont\">";
 		$enabled_feeds = $this->host->get($this, "enabled_feeds");
 		if (!is_array($enabled_feeds)) $enabled_feeds = array();
@@ -146,7 +146,7 @@ class ttrss_opencc extends Plugin
 			foreach($request_body as $key=>$value) { $request_body_string .= $key.'='.$value.'&'; }
 	rtrim($request_body_string, '&');
 	
-			curl_setopt($ch, CURLOPT_URL, 'https://rss.serveo.net/api/v1/opencc?apikey=' .$api_key);
+			curl_setopt($ch, CURLOPT_URL, 'https://api.henry.wang/api/v1/opencc?apikey=' .$api_key);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $request_headers);
 			curl_setopt($ch, CURLOPT_ENCODING, "UTF-8");
