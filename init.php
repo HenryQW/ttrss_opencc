@@ -1,5 +1,5 @@
 <?php
-class ttrss_opencc extends Plugin
+class opencc extends Plugin
 
 	{
 	private $host;
@@ -58,7 +58,7 @@ class ttrss_opencc extends Plugin
 			</script>";
 		print_hidden("op", "pluginhandler");
 		print_hidden("method", "save");
-		print_hidden("plugin", "ttrss_opencc");
+		print_hidden("plugin", "opencc");
 		$opencc_API = $this->host->get($this, "opencc_API");
 		print "<input dojoType='dijit.form.ValidationTextBox' required='1' name='opencc_API' value='" . $opencc_API . "'/>";
 		print "&nbsp;<label for=\"opencc_API\">" . __("API key for OpenCC server. https://github.com/HenryQW/api.henry.wang/blob/master/controllers/openCCController.js") . "</label>";
@@ -113,7 +113,7 @@ class ttrss_opencc extends Plugin
 				array_push($enabled_feeds, $feed_id);
 				}
 			}
-		  else
+		else
 			{
 			if ($key !== FALSE)
 				{
