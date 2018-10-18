@@ -22,7 +22,7 @@ class opencc extends Plugin
 	function save()
 		{
 		$this->host->set($this, "opencc_API_server", $_POST["opencc_API_server"]);
-		echo __("API key saved.");
+		echo __("API server address saved.");
 		}
 
 	function init($host)
@@ -61,8 +61,8 @@ class opencc extends Plugin
 		print_hidden("plugin", "opencc");
 		$opencc_API_server = $this->host->get($this, "opencc_API_server");
 		print "<input dojoType='dijit.form.ValidationTextBox' required='1' name='opencc_API_server' value='" . $opencc_API_server . "'/>";
-		print "&nbsp;<label for=\"opencc_API_server\">" . __("OpenCC API server address, HTTPS only.") . "</label>";
-		print "<p>";
+		print "&nbsp;<label for=\"opencc_API_server\">" . __("OpenCC API server address, with HTTP/HTTPS protocol.") . "</label>";
+		print "<p>Demo instances (availability is not guaranteed): https://opencc.henry.wang or http://opencc2.henry.wang </p>";
 		print_button("submit", __("Save"));
 		print "</form>";
 		$enabled_feeds = $this->host->get($this, "enabled_feeds");
