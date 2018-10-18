@@ -21,7 +21,7 @@ class opencc extends Plugin
 
 	function save()
 		{
-		$this->host->set($this, "opencc_API", $_POST["opencc_API"]);
+		$this->host->set($this, "opencc_API_server", $_POST["opencc_API_server"]);
 		echo __("API key saved.");
 		}
 
@@ -59,9 +59,9 @@ class opencc extends Plugin
 		print_hidden("op", "pluginhandler");
 		print_hidden("method", "save");
 		print_hidden("plugin", "opencc");
-		$opencc_API = $this->host->get($this, "opencc_API");
-		print "<input dojoType='dijit.form.ValidationTextBox' required='1' name='opencc_API' value='" . $opencc_API . "'/>";
-		print "&nbsp;<label for=\"opencc_API\">" . __("API key for OpenCC server. https://github.com/HenryQW/api.henry.wang/blob/master/controllers/openCCController.js") . "</label>";
+		$opencc_API_server = $this->host->get($this, "opencc_API_server");
+		print "<input dojoType='dijit.form.ValidationTextBox' required='1' name='opencc_API_server' value='" . $opencc_API_server . "'/>";
+		print "&nbsp;<label for=\"opencc_API_server\">" . __("OpenCC API server address, HTTPS only.") . "</label>";
 		print "<p>";
 		print_button("submit", __("Save"));
 		print "</form>";
@@ -136,7 +136,7 @@ class opencc extends Plugin
 		{
 			$ch = curl_init();
 			$url = $article['link'];
-			$api_key = $this->host->get($this, "opencc_API");
+			$opencc_API_server = $this->host->get($this, "opencc_API_server");
 			$request_headers = array();
 			$request_body = array(
 				'content' => urlencode($article['content']),
@@ -146,7 +146,7 @@ class opencc extends Plugin
 			foreach($request_body as $key=>$value) { $request_body_string .= $key.'='.$value.'&'; }
 	rtrim($request_body_string, '&');
 	
-			curl_setopt($ch, CURLOPT_URL, 'https://api.henry.wang/api/v1/opencc?apikey=' .$api_key);
+			curl_setopt($ch, CURLOPT_URL, $opencc_API_server);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $request_headers);
 			curl_setopt($ch, CURLOPT_ENCODING, "UTF-8");
