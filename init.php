@@ -113,7 +113,7 @@ class opencc extends Plugin{
 
 		print "<hr/><input dojoType=\"dijit.form.CheckBox\" type=\"checkbox\" id=\"opencc_enabled\"
 			name=\"opencc_enabled\"
-			$checked>&nbsp;<label for=\"opencc_enabled\">".__('Inline article content')."</label>";
+			$checked>&nbsp;<label for=\"opencc_enabled\">".__('Enable OpenCC')."</label>";
 
 		print "</div>";
 	}
