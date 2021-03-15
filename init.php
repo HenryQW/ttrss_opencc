@@ -186,7 +186,9 @@ class OpenCC extends Plugin
                 'title' => urlencode($title),
                 'content' => urlencode($content)
             );
-    
+
+        $request_body_string = "";
+
         foreach ($request_body as $key=>$value) {
             $request_body_string .= $key.'='.$value.'&';
         }
