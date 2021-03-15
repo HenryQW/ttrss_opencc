@@ -2,17 +2,17 @@ Plugins.OpenCC = {
   orig_content: "data-opencc-orig-content",
   self: this,
   convert: function (id) {
-    const content = $$(
+    const content = App.find(
       App.isCombinedMode()
-        ? ".cdm[data-article-id=" + id + "] .content-inner"
-        : ".post[data-article-id=" + id + "] .content"
-    )[0];
+        ? `.cdm[data-article-id="${id}"] .content-inner`
+        : `.post[data-article-id="${id}"] .content`
+    );
 
-    const title = $$(
+    const title = App.find(
       App.isCombinedMode()
-        ? ".cdm[data-article-id=" + id + "] .title"
-        : ".post[data-article-id=" + id + "] .title > a"
-    )[0];
+        ? `.cdm[data-article-id="${id}"] .title`
+        : `.post[data-article-id="${id}"] .title > a`
+    );
 
     if (content.hasAttribute(self.orig_content)) {
       content.innerHTML = content.getAttribute(self.orig_content);
@@ -22,16 +22,16 @@ Plugins.OpenCC = {
         title.text = title.getAttribute("title");
       }
 
-      if (App.isCombinedMode()) Article.cdmScrollToId(id);
+      if (App.isCombinedMode()) Article.cdmMoveToId(id);
 
       return;
     }
 
     Notify.progress("Loading, please wait...");
 
-    xhrJson(
+    xhr.json(
       "backend.php",
-      { op: "pluginhandler", plugin: "opencc", method: "convert", param: id },
+      App.getPhArgs("opencc", "convert", { id: id }),
       (reply) => {
         if (content && reply.content) {
           content.setAttribute(self.orig_content, content.innerHTML);
@@ -40,7 +40,7 @@ Plugins.OpenCC = {
             title.text = reply.title;
           }
           Notify.close();
-          if (App.isCombinedMode()) Article.cdmScrollToId(id);
+          if (App.isCombinedMode()) Article.cdmMoveToId(id);
         } else {
           Notify.error("Unable to convert via OpenCC for this article");
         }

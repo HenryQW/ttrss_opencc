@@ -72,22 +72,18 @@ class OpenCC extends Plugin
             print "<form dojoType='dijit.form.Form'>";
 
             print "<script type='dojo/method' event='onSubmit' args='evt'>
-			evt.preventDefault();
-			if (this.validate()) {
-				console.log(dojo.objectToQuery(this.getValues()));
-				new Ajax.Request('backend.php', {
-					parameters: dojo.objectToQuery(this.getValues()),
-					onComplete: function(transport) {
-						Notify.info(transport.responseText);
-					}
-				});
-				//this.reset();
-			}
-			</script>";
+                evt.preventDefault();
+                if (this.validate()) {
+                xhr.post(\"backend.php\", this.getValues(), (transport) => {
+                            Notify.info(transport.responseText);
+                        })
+                }
+                </script>";
 
-            print_hidden("op", "pluginhandler");
-            print_hidden("method", "save");
-            print_hidden("plugin", "opencc");
+            print \Controls\hidden_tag("op", "pluginhandler");
+            print \Controls\hidden_tag("method", "save");
+            print \Controls\hidden_tag("plugin", "opencc");
+
 
             $opencc_API_server = $this->host->get($this, "opencc_API_server");
 
@@ -96,8 +92,8 @@ class OpenCC extends Plugin
             print "&nbsp;<label for='opencc_API_server'>" . __("OpenCC API server address, with HTTP/HTTPS protocol.") . "</label>";
 
             print "<p>Read the <a href='http://ttrss.henry.wang/#opencc-simp-trad-chinese-conversion'>documents</a>.</p>";
+            print "<button dojoType=\"dijit.form.Button\" type=\"submit\" class=\"alt-primary\">".__('Save')."</button>";
 
-            print_button("submit", __("Save"), "class='alt-primary'");
             print "</form>";
 
             $enabled_feeds = $this->host->get($this, "enabled_feeds");
@@ -116,7 +112,8 @@ class OpenCC extends Plugin
                     print "<li>" .
                     "<i class='material-icons'>rss_feed</i> <a href='#'
 						onclick='CommonDialogs.editFeed($f)'>".
-                    Feeds::getFeedTitle($f) . "</a></li>";
+                    Feeds::_get_title($f) . "</a></li>";
+
                 }
                 print "</ul>";
             }
@@ -261,7 +258,7 @@ class OpenCC extends Plugin
 
     public function convert()
     {
-        $article_id = (int) $_REQUEST["param"];
+        $article_id = (int) $_REQUEST["id"];
 
         $sth = $this->pdo->prepare("SELECT title, content FROM ttrss_entries WHERE id = ?");
         $sth->execute([$article_id]);
