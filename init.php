@@ -74,16 +74,13 @@ class OpenCC extends Plugin
             print "<script type='dojo/method' event='onSubmit' args='evt'>
                 evt.preventDefault();
                 if (this.validate()) {
-                xhr.post(\"backend.php\", this.getValues(), (transport) => {
-                            Notify.info(transport.responseText);
+                xhr.post(\"backend.php\", this.getValues(), (reply) => {
+                            Notify.info(reply);
                         })
                 }
                 </script>";
 
-            print \Controls\hidden_tag("op", "pluginhandler");
-            print \Controls\hidden_tag("method", "save");
-            print \Controls\hidden_tag("plugin", "opencc");
-
+            print \Controls\pluginhandler_tags($this, "save");
 
             $opencc_API_server = $this->host->get($this, "opencc_API_server");
 
